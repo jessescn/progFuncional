@@ -63,37 +63,51 @@ sizeBST NIL = 0
 sizeBST (Node a left right) = 1 + sizeBST left + sizeBST right
 
 --verifica se uma BT é uma BST
-isBST = undefined 
+isBST (Node a NIL NIL) = True
+isBST (Node a NIL right) = minValue right >= a
+isBST (Node a left NIL) = maxValue left < a
+isBST (Node a left right) 
+    | maxValue left < a && minValue right >= a = isBST left && isBST right
+    | otherwise = False
 
---insere uma nova chave na BST retornando a BST modificada
-insert = undefined
-
---retorna o Node da BST contendo o dado procurado ou entao NIL
-search = undefined
-
---retorna o elmento maximo da BST
 maxValue (Node a NIL NIL) = a
 maxValue (Node a NIL b) = max a (maxValue b)
 maxValue (Node a b NIL) = max a (maxValue b)
 maxValue (Node a left right) = foldr (max) a [ a , (maxValue left) , (maxValue right)]
 
-
---retorna o elemento minimo da BST
--- minValue NIL = Nothing
 minValue (Node a NIL NIL) = a
 minValue (Node a NIL b) = min a (minValue b)
 minValue (Node a b NIL) = min a (minValue b)
 minValue (Node a left right) = foldr (min) a [ a , (minValue left) , (minValue right)]
 
+--insere uma nova chave na BST retornando a BST modificada
+insert NIL b = (Node b NIL NIL)
+insert (Node a left right) b
+    | b < a = (Node a (insert left b) right)
+    | otherwise = (Node a left (insert right b))
 
--- Node 10 ((Node 3 NIL NIL) (Node 12 NIL NIL))
---Node 10 (Node 8 (Node 6 NIL NIL) (Node 11 (Node 3 NIL NIL) NIL)) (Node 12 NIL NIL)
+--retorna o Node da BST contendo o dado procurado ou entao NIL
+search NIL _ = NIL
+search (Node a left right) b 
+    | a == b = (Node a NIL NIL)
+    | a > b = search left b
+    | otherwise = search right b 
 
---retorna o predecessor de um elemento da BST, caso o elemento esteja na BST
-predecessor = undefined
+--retorna o elmento maximo da BST
+maxElement NIL = NIL
+maxElement (Node a _ NIL) = (Node a NIL NIL)
+maxElement (Node a _ right) = maxElement right
+
+--retorna o elemento minimo da BST
+minElement NIL = NIL
+minElement (Node a NIL _) = (Node a NIL NIL)
+minElement (Node a left _) = minElement left
+
+--retorna o predecessor de um elemento da BST, caso o elemento esteja na BST   
 
 --retorna o sucessor de um elemento da BST, caso o elemento esteja na BST
-successor = undefined
+successor (Node a left right) b 
+    | search (Node a )
 
 --remove ume lemento da BST
 remove = undefined
